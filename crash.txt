@@ -1,0 +1,248 @@
+
+import discord
+import time
+from discord import app_commands
+
+import cloudscraper
+from discord.ext import commands
+import math
+
+
+
+class aclient(discord.Client):
+
+  def __init__(self):
+    super().__init__(intents=discord.Intents.default())
+    self.synced = False
+
+  async def on_ready(self):
+    await self.wait_until_ready()
+    if not self.synced:
+      await tree.sync()
+      self.synced = True
+    print(f"We have logged in as {self.user}.")
+
+
+client = aclient()
+tree = app_commands.CommandTree(client)
+
+scraper = cloudscraper.create_scraper(
+        browser={
+            'custom': 'ScraperBot/1.0',
+        }
+    )
+@tree.command()
+@discord.app_commands.checks.has_role("customers")
+async def send_dm(interaction: discord.Interaction, member: discord.Member, content: str):
+        await member.send(content)
+        await interaction.response.send_message("SUP", ephemeral=True)
+
+import asyncpraw
+import random
+import json
+import urllib
+#Auto Mines :)  
+
+@tree.command()
+#@discord.app_commands.checks.has_role("customers")
+async def crash(interaction: discord.Interaction):
+  r = scraper.get("https://api.bloxflip.com/games/crash").json()
+  e = discord.Embed(title="Grabbing API...", color=discord.Color.green())
+  await interaction.response.send_message(embed=e)
+  time.sleep(1)
+  history = r["history"]
+  a =  [float(crashpoint["crashPoint"]) for crashpoint in history][::-1][-146:]
+  predict=(sum(a)/149)
+  e2 = discord.Embed(title=f"Prediction: {predict : .2f}", color=discord.Color.green())
+  await interaction.edit_original_response(embed=e2)
+
+@tree.command()
+#@discord.app_commands.checks.has_role("customers")
+async def crash2(interaction: discord.Interaction):
+    t = scraper.get("https://api.bloxflip.com/games/crash").json()
+    previousGame = t["history"][0]["crashPoint"]
+    gameId = t["current"]["_id"]
+    av2 = (t["history"][0]["crashPoint"] + t["history"][1]["crashPoint"])
+    chancenum = 100/previousGame
+    estnum = (1 / (1 - chancenum) + av2) / 2
+    estimate = ("{:.2f}".format(round(estnum, 2)))
+    chance = ("{:.2f}".format(round(chancenum, 2)))
+    event = discord.Embed(title=f"Crash Predictor", description=f"Crash v2", color=0x6CF90B)
+    event.add_field(name="Crash Estimate", value=f"{estimate}X", inline=False)
+    event.add_field(name="Chance", value=f"{chance}%", inline=False)
+    event.add_field(name="Round ID", value=f"{gameId}", inline=False)
+    await interaction.response.send_message(embed=event)
+s = cloudscraper.create_scraper(browser={'custom': 'ScraperBot/1.0'})    
+def crashPoint(num):
+    info = s.get('https://api.bloxflip.com/games/crash').json()['history'][num]['crashPoint']
+    return info
+import numpy as np
+import statistics
+@tree.command()
+#@discord.app_commands.checks.has_role("customers")
+async def crash3(interaction: discord.Interaction):
+    one = crashPoint(0)
+    two = crashPoint(1)
+    three = crashPoint(2)
+    four = crashPoint(3)
+    five = crashPoint(4)
+    #six = crashPoint(5)
+    #seven = crashPoint(6)
+    #eight = crashPoint(7)
+    #nine = crashPoint(8)
+    #ten = crashPoint(9)
+    if "{:.2f}".format(one + two + three) < "3.50":
+        risk = "(Unstable Prediction)"
+    else:
+        risk = ""
+    pst10 = [one, two, three, four, five]
+    average = sum(pst10) / len(pst10)
+    std_dev = statistics.stdev(pst10)
+    average_c = np.mean(average)
+    std_dev_c = np.std(std_dev)
+    prediction = (2 / (average_c - std_dev_c) / 2)
+    prediction = prediction + 1
+    risky = (4 / (average_c - std_dev_c) / 7)
+    risky = risky + prediction
+    prediction = "{:.2f}".format(prediction)
+    risky = "{:.2f}".format(risky)
+    t = scraper.get("https://api.bloxflip.com/games/crash").json()
+    gameId = t["current"]["_id"]
+    h = discord.Embed(title="Grabbing API...", color=discord.Color.green())
+    await interaction.response.send_message(embed=h)
+    time.sleep(1)
+    em = discord.Embed(title=f"Crash Predictor V3", color=0x6CF90B)
+    em.add_field(name="Prediction", value=f"{prediction}x {risk}", inline=False)
+    em.add_field(name="Unstable betting", value=f"{risky}x", inline=False)
+    em.add_field(name="Round ID", value=f"{gameId}", inline=False)
+    await interaction.edit_original_response(embed=em)  
+@tree.command()
+#@discord.app_commands.checks.has_role("customers")
+async def crash4(interaction: discord.Interaction):
+    one = crashPoint(0)
+    two = crashPoint(1)
+    three = crashPoint(2)
+    #six = crashPoint(5)
+    #seven = crashPoint(6)
+    #eight = crashPoint(7)
+    #nine = crashPoint(8)
+    #ten = crashPoint(9)
+    if "{:.2f}".format(one + two + three) < "3.50":
+        risk1 = "(Unstable Prediction)"
+    else:
+        risk1 = ""
+    pst11 = [one, two, three]
+    averaga = sum(pst11) / len(pst11)
+    std_dea = statistics.stdev(pst11)
+    average_a = np.mean(averaga)
+    std_dev_a = np.std(std_dea)
+    predictioo = (2 / (average_a - std_dev_a) / 2)
+    predictioo = predictioo + 1
+    risky1 = (4 / (average_a - std_dev_a) / 7)
+    risky1 = risky1 + predictioo
+    predictioo = "{:.2f}".format(predictioo)
+    risky1 = "{:.2f}".format(risky1)
+    t = scraper.get("https://api.bloxflip.com/games/crash").json()
+    gameId = t["current"]["_id"]
+    i = discord.Embed(title="Grabbing API...", color=discord.Color.green())
+    await interaction.response.send_message(embed=i)
+    time.sleep(1)
+    em1 = discord.Embed(title=f"Crash Predictor V4", color=0x6CF90B)
+    em1.add_field(name="Prediction", value=f"{predictioo}x {risk1}", inline=False)
+    em1.add_field(name="Unstable betting", value=f"{risky1}x", inline=False)
+    em1.add_field(name="Round ID", value=f"{gameId}", inline=False)
+    await interaction.edit_original_response(embed=em1)    
+      
+#280
+@tree.command(name="help") 
+#@discord.app_commands.checks.has_role("customers")
+async def help(interaction: discord.Interaction):
+  embed = discord.Embed(title="Help", color=discord.Color.blue())
+  embed.add_field(name="Reaction roles", value="<#1147071104804978688> to reaction roles")
+  embed.add_field(name="Command", value="/crash to crash predictor in bloxflip \n/roulette to roulette predictor\n ")
+  await interaction.response.send_message(embed=embed)
+
+import datetime 
+@tree.command()
+#@discord.app_commands.checks.has_role("customers")
+async def roulette(interaction: discord.Interaction):
+  currentid = scraper.get("https://api.bloxflip.com/games/roulette").json()["current"]["_id"]
+  first = scraper.get("https://api.bloxflip.com/games/roulette").json()["history"][0]["winningColor"]
+  second = scraper.get("https://api.bloxflip.com/games/roulette").json()["history"][1]["winningColor"]
+  thrid = scraper.get("https://api.bloxflip.com/games/roulette").json()["history"][2]["winningColor"]
+  count = first, second, thrid
+  redcount = count.count("red")
+  pcount = count.count("purple")
+  ycount = count.count("yellow")
+  redcountt = 100 - (redcount * 25)
+  pcountt = 100 - (pcount * 25)
+  ycountt = 100 - (ycount * 25)
+  if redcountt > pcountt:
+    guess = ":red_square:"
+  else:
+    if pcountt > redcountt:
+      guess = ":purple_square:"
+    else:
+      if ycountt > pcountt:
+        guess = ":yellow_square:"
+      else:
+        guess = "None"
+  if redcount == 3:
+    streak = "3 Win Streak On Red"
+  else:
+    if pcount == 3:
+      streak = "3 Win Streak On Purple"
+    else:
+      if ycount == 3:
+        streak = "3 Win Streak On Yellow"
+      else:
+        streak = "No Win Streak"
+  embed = discord.Embed(title="Predict Roulette", color=discord.Color.blue())
+  embed.add_field(name="Game Info", value=f"Round ID: {currentid}", inline=False)
+  embed.add_field(name=f"Prediction: {guess}\nStreak: {streak}", value=f"\a", inline=False)
+  await interaction.response.send_message(embed=embed)
+@help.error
+async def gguuu(interaction: discord.Interaction, error):
+  if isinstance(error, commands.NoPrivateMessage):
+    embed = discord.Embed(title="Error | Command Cant Be Used Here!",color=discord.Color.red())
+    await interaction.response.send_message(embed=embed)
+
+
+@roulette.error
+async def rerror(interaction: discord.Interaction, error):
+  if isinstance(error, commands.NoPrivateMessage):
+    embed = discord.Embed(title="Error | Command Cant Be Used Here!",color=discord.Color.red())
+    await interaction.response.send_message(embed=embed)
+
+
+@roulette.error
+async def qwfguyqwtgfyuiqwuoiduqwfioyeriugyq(interaction: discord.Interaction, error):
+  if isinstance(error, commands.NoPrivateMessage):
+    embed = discord.Embed(title="Error | Command Cant Be Used Here!",color=discord.Color.red())
+    await interaction.response.send_message(embed=embed)
+
+
+@crash2.error
+async def qwdqwdqwdqwdqwdwrgqwedfwrgefwew(interaction: discord.Interaction, error):
+  if isinstance(error, commands.NoPrivateMessage):
+    embed = discord.Embed(title="Error | Command Cant Be Used Here!",color=discord.Color.red())
+    await interaction.response.send_message(embed=embed)
+
+@crash.error
+async def cerror(interaction: discord.Interaction, error):
+  if isinstance(error, commands.NoPrivateMessage):
+    embed = discord.Embed(title="Error | Command Cant Be Used Here!",color=discord.Color.red())
+    await interaction.response.send_message(embed=embed)
+
+
+@roulette.error
+async def fhqfew(interaction: discord.Interaction, error):
+  if isinstance(error, commands.NoPrivateMessage):
+    embed = discord.Embed(title="Error | Command Cant Be Used Here!",color=discord.Color.red())
+    await interaction.response.send_message(embed=embed)
+
+
+
+client.run("token here")
+
+#1000
